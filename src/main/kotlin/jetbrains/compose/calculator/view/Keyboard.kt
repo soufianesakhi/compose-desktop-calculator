@@ -31,11 +31,7 @@ fun Keyboard(
         modifier = modifier,
         color = MaterialTheme.colors.background
     ) {
-        Box(
-            alignment = Alignment.Center
-        ) {
-            KeyboardKeys(mainOutput)
-        }
+        KeyboardKeys(mainOutput)
     }
 }
 
@@ -66,25 +62,21 @@ fun KeyboardKey(modifier: Modifier, key: Key?, mainOutput: MutableState<TextFiel
         mainOutput.value = TextFieldValue(text = textValue)
     }) {
         if (key.icon == null) {
-            if (key.type == KeyType.COMMAND) {
-                Box(alignment = Alignment.Center) {
-                    Text(
-                        text = key.value,
-                        style = TextStyle(
-                            color = MaterialTheme.colors.primary,
-                            fontSize = 22.sp
-                        )
-                    )
-                }
+            val textStyle = if (key.type == KeyType.COMMAND) {
+                TextStyle(
+                    color = MaterialTheme.colors.primary,
+                    fontSize = 22.sp
+                )
             } else {
-                Text(
-                    text = key.value,
-                    style = TextStyle(
-                        fontFamily = jostFontFamily,
-                        fontSize = 29.sp
-                    )
+                TextStyle(
+                    fontFamily = jostFontFamily,
+                    fontSize = 29.sp
                 )
             }
+            Text(
+                text = key.value,
+                style = textStyle
+            )
         } else {
             Icon(
                 asset = key.icon,
