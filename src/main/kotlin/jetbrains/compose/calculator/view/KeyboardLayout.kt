@@ -17,22 +17,8 @@ enum class KeyType {
     OPERAND, COMMAND
 }
 
-val key0 = Key("0", type = KeyType.OPERAND)
-val key1 = Key("1", type = KeyType.OPERAND)
-val key2 = Key("2", type = KeyType.OPERAND)
-val key3 = Key("3", type = KeyType.OPERAND)
-val key4 = Key("4", type = KeyType.OPERAND)
-val key5 = Key("5", type = KeyType.OPERAND)
-val key6 = Key("6", type = KeyType.OPERAND)
-val key7 = Key("7", type = KeyType.OPERAND)
-val key8 = Key("8", type = KeyType.OPERAND)
-val key9 = Key("9", type = KeyType.OPERAND)
-val keyPoint = Key(".", type = KeyType.OPERAND)
-
-val keyAddition = Key("+", type = KeyType.COMMAND)
-val keySubtraction = Key("-", type = KeyType.COMMAND)
-val keyMultiply = Key("x", type = KeyType.COMMAND)
-val keyDivision = Key("÷", type = KeyType.COMMAND)
+fun String.operand() = Key(this, type = KeyType.OPERAND)
+fun String.command() = Key(this, type = KeyType.COMMAND)
 
 val keyEquals = Key("=", type = KeyType.OPERAND, onClick = { mainOutput ->
     val input = mainOutput.value.text
@@ -51,8 +37,8 @@ val keyDelete = Key("", type = KeyType.COMMAND, icon = Assets.OutlineBackspace, 
 })
 
 val KeyboardLayout = listOf(
-    listOf(key7, key4, key1, key0),
-    listOf(key8, key5, key2, keyPoint),
-    listOf(key9, key6, key3, keyEquals),
-    listOf(keyDelete, keyDivision, keyMultiply, keySubtraction, keyAddition)
+    listOf("7".operand(), "4".operand(), "1".operand(), "0".operand()),
+    listOf("8".operand(), "5".operand(), "2".operand(), ".".operand()),
+    listOf("9".operand(), "6".operand(), "3".operand(), keyEquals),
+    listOf(keyDelete, "÷".command(), "x".command(), "-".command(), "+".command())
 )
