@@ -20,6 +20,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import jetbrains.compose.calculator.resources.CALCULATOR_PADDING
 import jetbrains.compose.calculator.resources.jostFontFamily
 
 @Composable
@@ -27,10 +28,7 @@ fun Keyboard(
     modifier: Modifier,
     mainOutput: MutableState<TextFieldValue>
 ) {
-    Surface(
-        modifier = modifier,
-        color = MaterialTheme.colors.background
-    ) {
+    Surface(modifier) {
         KeyboardKeys(mainOutput)
     }
 }
@@ -53,7 +51,7 @@ fun KeyboardKey(modifier: Modifier, key: Key?, mainOutput: MutableState<TextFiel
     if (key == null) {
         return EmptyKeyView(modifier)
     }
-    KeyView(modifier = modifier, onClick = key.onClick?.let {
+    KeyView(modifier = modifier.padding(1.dp), onClick = key.onClick?.let {
         { it(mainOutput) }
     } ?: {
         val textValue = mainOutput.value.text.let {
@@ -88,7 +86,6 @@ fun KeyboardKey(modifier: Modifier, key: Key?, mainOutput: MutableState<TextFiel
 
 val KEY_BORDER_WIDTH = 1.dp
 val KEY_BORDER_COLOR = Color.Gray
-val KEY_BACKGROUND = Color.Transparent
 val KEY_ACTIVE_BACKGROUND = Color.White
 
 @Composable
@@ -102,8 +99,9 @@ fun KeyView(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = modifier.fillMaxWidth()
+            .padding(CALCULATOR_PADDING)
             .clickable(onClick = onClick)
-            .background(color = if (active.value) KEY_ACTIVE_BACKGROUND else KEY_BACKGROUND)
+            .background(color = if (active.value) KEY_ACTIVE_BACKGROUND else MaterialTheme.colors.background)
             .border(width = KEY_BORDER_WIDTH, color = KEY_BORDER_COLOR)
             .pointerMoveFilter(
                 onEnter = {
@@ -122,6 +120,6 @@ fun KeyView(
 @Composable
 fun EmptyKeyView(modifier: Modifier) = Box(
     modifier = modifier.fillMaxWidth()
-        .background(KEY_BACKGROUND)
+        .background(MaterialTheme.colors.background)
         .border(width = KEY_BORDER_WIDTH, color = KEY_BORDER_COLOR)
 )
