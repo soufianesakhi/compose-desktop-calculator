@@ -14,8 +14,10 @@ fun calculate(input: String): String? {
     }
     return try {
         val result = BigDecimal(Expression(expression).calculate())
-            .round(MathContext(10, RoundingMode.UP))
-        result.toString()
+            .round(MathContext(10, RoundingMode.HALF_UP))
+            .setScale(10, RoundingMode.HALF_UP)
+            .stripTrailingZeros()
+        result.toPlainString()
     } catch (e: Exception) {
         null
     }
