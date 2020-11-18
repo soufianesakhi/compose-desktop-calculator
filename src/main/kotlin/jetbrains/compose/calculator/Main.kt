@@ -8,6 +8,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.IntSize
+import jetbrains.compose.calculator.resources.Assets
 import jetbrains.compose.calculator.resources.lightThemeColors
 import jetbrains.compose.calculator.view.DisplayPanel
 import jetbrains.compose.calculator.view.Keyboard
@@ -15,7 +16,11 @@ import jetbrains.compose.calculator.view.Keyboard
 const val DEFAULT_WIDTH = 500
 const val DEFAULT_HEIGHT = 500
 
-fun main() = Window(title = "Compose Calculator - simply-how.com", size = IntSize(DEFAULT_WIDTH, DEFAULT_HEIGHT)) {
+fun main() = Window(
+    title = "Compose Calculator - simply-how.com",
+    size = IntSize(DEFAULT_WIDTH, DEFAULT_HEIGHT),
+    icon = Assets.WindowIcon
+) {
     MaterialTheme(colors = lightThemeColors) {
         val mainOutput = remember { mutableStateOf(TextFieldValue("0")) }
         Column(Modifier.fillMaxHeight()) {
