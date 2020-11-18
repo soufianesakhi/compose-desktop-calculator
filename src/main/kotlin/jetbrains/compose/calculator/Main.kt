@@ -12,7 +12,7 @@ import jetbrains.compose.calculator.resources.lightThemeColors
 import jetbrains.compose.calculator.view.DisplayPanel
 import jetbrains.compose.calculator.view.Keyboard
 
-const val DEFAULT_WIDTH = 400
+const val DEFAULT_WIDTH = 500
 const val DEFAULT_HEIGHT = 500
 
 fun main() = Window(title = "Compose Calculator - simply-how.com", size = IntSize(DEFAULT_WIDTH, DEFAULT_HEIGHT)) {

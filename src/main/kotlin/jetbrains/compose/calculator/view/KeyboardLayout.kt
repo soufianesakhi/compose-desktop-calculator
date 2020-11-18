@@ -36,10 +36,14 @@ val keyDelete = Key("", type = KeyType.COMMAND, icon = Assets.OutlineBackspace, 
     }
 })
 
+val keyClear = Key("Clear", type = KeyType.COMMAND, onClick = { mainOutput ->
+    mainOutput.value = TextFieldValue("0")
+})
+
 val KeyboardLayout = listOf(
-    listOf("7".operand(), "4".operand(), "1".operand(), "0".operand()),
-    listOf("8".operand(), "5".operand(), "2".operand(), ".".operand()),
-    listOf("9".operand(), "6".operand(), "3".operand(), null),
+    listOf("7".operand(), "4".operand(), "1".operand(), keyClear),
+    listOf("8".operand(), "5".operand(), "2".operand(), "0".operand()),
+    listOf("9".operand(), "6".operand(), "3".operand(), ".".operand()),
     listOf("÷".command(), "x".command(), "-".command(), "+".command()),
     listOf(keyDelete, keyEquals)
 )
