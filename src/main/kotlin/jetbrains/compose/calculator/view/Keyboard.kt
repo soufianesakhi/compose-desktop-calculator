@@ -53,7 +53,10 @@ fun KeyboardKeys(mainOutput: MutableState<TextFieldValue>) {
 }
 
 @Composable
-fun KeyboardKey(modifier: Modifier, key: Key, mainOutput: MutableState<TextFieldValue>) {
+fun KeyboardKey(modifier: Modifier, key: Key?, mainOutput: MutableState<TextFieldValue>) {
+    if (key == null) {
+        return EmptyKeyView(modifier)
+    }
     KeyView(modifier = modifier, onClick = key.onClick?.let {
         { it(mainOutput) }
     } ?: {
@@ -91,6 +94,10 @@ fun KeyboardKey(modifier: Modifier, key: Key, mainOutput: MutableState<TextField
     }
 }
 
+val KEY_BORDER_WIDTH = 1.dp
+val KEY_BORDER_COLOR = Color.Gray
+val KEY_BACKGROUND = Color.Transparent
+val KEY_ACTIVE_BACKGROUND = Color.White
 
 @Composable
 fun KeyView(
@@ -104,8 +111,8 @@ fun KeyView(
         verticalArrangement = Arrangement.Center,
         modifier = modifier.fillMaxWidth()
             .clickable(onClick = onClick)
-            .background(color = if (active.value) Color.White else Color.Transparent)
-            .border(width = 1.dp, color = Color.Gray)
+            .background(color = if (active.value) KEY_ACTIVE_BACKGROUND else KEY_BACKGROUND)
+            .border(width = KEY_BORDER_WIDTH, color = KEY_BORDER_COLOR)
             .pointerMoveFilter(
                 onEnter = {
                     active.value = true
@@ -119,3 +126,10 @@ fun KeyView(
         children = children
     )
 }
+
+@Composable
+fun EmptyKeyView(modifier: Modifier) = Box(
+    modifier = modifier.fillMaxWidth()
+        .background(KEY_BACKGROUND)
+        .border(width = KEY_BORDER_WIDTH, color = KEY_BORDER_COLOR)
+)

@@ -20,7 +20,7 @@ enum class KeyType {
 fun String.operand() = Key(this, type = KeyType.OPERAND)
 fun String.command() = Key(this, type = KeyType.COMMAND)
 
-val keyEquals = Key("=", type = KeyType.OPERAND, onClick = { mainOutput ->
+val keyEquals = Key("=", type = KeyType.COMMAND, onClick = { mainOutput ->
     val input = mainOutput.value.text
     calculate(input)?.let { result ->
         mainOutput.value = TextFieldValue(text = result)
@@ -39,6 +39,7 @@ val keyDelete = Key("", type = KeyType.COMMAND, icon = Assets.OutlineBackspace, 
 val KeyboardLayout = listOf(
     listOf("7".operand(), "4".operand(), "1".operand(), "0".operand()),
     listOf("8".operand(), "5".operand(), "2".operand(), ".".operand()),
-    listOf("9".operand(), "6".operand(), "3".operand(), keyEquals),
-    listOf(keyDelete, "÷".command(), "x".command(), "-".command(), "+".command())
+    listOf("9".operand(), "6".operand(), "3".operand(), null),
+    listOf("÷".command(), "x".command(), "-".command(), "+".command()),
+    listOf(keyDelete, keyEquals)
 )
