@@ -17,10 +17,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import jetbrains.compose.calculator.resources.CALCULATOR_PADDING
-import jetbrains.compose.calculator.resources.jostFontFamily
-
+import jetbrains.compose.calculator.resources.TEXT_FONT_SIZE
 
 @Composable
 fun DisplayPanel(
@@ -30,10 +27,10 @@ fun DisplayPanel(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .background(MaterialTheme.colors.surface)
-            .padding(CALCULATOR_PADDING)
+            .background(MaterialTheme.colors.background)
+            .padding(5.dp)
             .background(Color.White)
-            .border(color = Color.Gray, width = 1.dp)
+            .border(color = Color.Gray, width = 2.dp)
             .padding(start = 16.dp, end = 16.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.End
@@ -41,8 +38,7 @@ fun DisplayPanel(
         Text(
             text = mainOutput.value.text,
             style = TextStyle(
-                fontSize = 48.sp,
-                fontFamily = jostFontFamily
+                fontSize = TEXT_FONT_SIZE,
             ),
             overflow = TextOverflow.Ellipsis,
             softWrap = false,

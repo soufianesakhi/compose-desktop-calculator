@@ -4,31 +4,29 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.BasicText
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerMoveFilter
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import jetbrains.compose.calculator.resources.CALCULATOR_PADDING
-import jetbrains.compose.calculator.resources.jostFontFamily
+import jetbrains.compose.calculator.resources.ICON_SIZE
+import jetbrains.compose.calculator.resources.TEXT_FONT_SIZE
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun Keyboard(
     modifier: Modifier,
     mainOutput: MutableState<TextFieldValue>
 ) {
-    Surface(modifier) {
+    Box(modifier.background(MaterialTheme.colors.background)) {
         KeyboardKeys(mainOutput)
     }
 }
@@ -51,7 +49,7 @@ fun KeyboardKey(modifier: Modifier, key: Key?, mainOutput: MutableState<TextFiel
     if (key == null) {
         return EmptyKeyView(modifier)
     }
-    KeyView(modifier = modifier.padding(1.dp), onClick = key.onClick?.let {
+    KeyView(modifier = modifier.padding(1.dp).fillMaxSize(), onClick = key.onClick?.let {
         { it(mainOutput) }
     } ?: {
         val textValue = mainOutput.value.text.let {
@@ -61,24 +59,25 @@ fun KeyboardKey(modifier: Modifier, key: Key?, mainOutput: MutableState<TextFiel
     }) {
         if (key.icon == null) {
             val textStyle = if (key.type == KeyType.COMMAND) {
-                TextStyle(
-                    color = MaterialTheme.colors.primary,
-                    fontSize = 22.sp
-                )
+                TextStyle(color = MaterialTheme.colors.primary)
             } else {
-                TextStyle(
-                    fontFamily = jostFontFamily,
-                    fontSize = 29.sp
-                )
+                TextStyle.Default
             }
-            Text(
+            BasicText(
                 text = key.value,
-                style = textStyle
+                style = textStyle,
+                maxLines = 1,
+                autoSize = TextAutoSize.StepBased(
+                    maxFontSize = TEXT_FONT_SIZE
+                ),
+                modifier = key.modifier
             )
         } else {
             Icon(
-                asset = key.icon,
-                tint = MaterialTheme.colors.primary
+                painterResource(key.icon),
+                "",
+                tint = MaterialTheme.colors.primary,
+                modifier = Modifier.width(ICON_SIZE).then(key.modifier)
             )
         }
     }
@@ -86,35 +85,27 @@ fun KeyboardKey(modifier: Modifier, key: Key?, mainOutput: MutableState<TextFiel
 
 val KEY_BORDER_WIDTH = 1.dp
 val KEY_BORDER_COLOR = Color.Gray
-val KEY_ACTIVE_BACKGROUND = Color.White
 
 @Composable
 fun KeyView(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
-    children: @Composable ColumnScope.() -> Unit
+    content: @Composable ColumnScope.() -> Unit
 ) {
-    val active = remember { mutableStateOf(false) }
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = modifier.fillMaxWidth()
-            .padding(CALCULATOR_PADDING)
-            .clickable(onClick = onClick)
-            .background(color = if (active.value) KEY_ACTIVE_BACKGROUND else MaterialTheme.colors.background)
-            .border(width = KEY_BORDER_WIDTH, color = KEY_BORDER_COLOR)
-            .pointerMoveFilter(
-                onEnter = {
-                    active.value = true
-                    false
-                },
-                onExit = {
-                    active.value = false
-                    false
-                }
-            ),
-        children = children
-    )
+    Surface(
+        elevation = 4.dp,
+        modifier = modifier.padding(1.5.dp)
+
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .clickable(onClick = onClick),
+            content = content
+        )
+    }
+
 }
 
 @Composable
