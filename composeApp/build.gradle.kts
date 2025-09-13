@@ -28,32 +28,53 @@ kotlin {
 
     jvm()
 
+    applyDefaultHierarchyTemplate()
+
     sourceSets {
-        androidMain.dependencies {
-            implementation(compose.preview)
-            implementation(libs.androidx.activity.compose)
+        commonMain {
+            dependencies {
+                implementation(compose.runtime)
+                implementation(compose.foundation)
+                implementation(compose.material)
+                implementation(compose.ui)
+                implementation(compose.components.resources)
+                implementation(compose.components.uiToolingPreview)
+                implementation(libs.androidx.lifecycle.viewmodelCompose)
+                implementation(libs.androidx.lifecycle.runtimeCompose)
+            }
         }
-        commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            implementation(compose.ui)
-            implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
-            implementation(libs.androidx.lifecycle.viewmodelCompose)
-            implementation(libs.androidx.lifecycle.runtimeCompose)
+        val composeMain by creating {
+            kotlin.srcDir("composeMain/kotlin")
+            dependencies {
+                implementation(libs.math.mxparser)
+            }
+            dependsOn(commonMain.get())
+        }
+        androidMain {
+            dependencies {
+                implementation(libs.androidx.activity.compose)
+            }
+            dependsOn(composeMain)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
-        jvmMain.dependencies {
-            implementation(compose.desktop.currentOs)
-            implementation(libs.kotlinx.coroutinesSwing)
-            implementation(libs.math.mxparser)
-            implementation(libs.compose.hotpreview)
+
+        val desktopMain by creating {
+            kotlin {
+                srcDir("desktopMain/kotlin")
+            }
+            dependsOn(composeMain)
+            dependencies {
+                implementation(compose.desktop.currentOs)
+                implementation(libs.kotlinx.coroutinesSwing)
+            }
         }
+
+        jvmMain.get().dependsOn(desktopMain)
     }
 }
+
 
 android {
     namespace = "jetbrains.compose.calculator"
@@ -92,8 +113,20 @@ compose.desktop {
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "ComposeDesktopCalculator"
-            packageVersion = "1.0.0"
+            packageName = "Calculator"
+            packageVersion = "1.0.1"
+
+            val iconFilePath = project.file("src/commonMain/composeResources/drawable/calculator.png")
+            macOS {
+                iconFile.set(iconFilePath)
+            }
+            windows {
+                iconFile.set(iconFilePath)
+            }
+            linux {
+                iconFile.set(iconFilePath)
+            }
+
         }
     }
 }
