@@ -111,20 +111,24 @@ compose.desktop {
     application {
         mainClass = "jetbrains.compose.calculator.MainKt"
 
-        nativeDistributions {
+        nativeDistributions { // see https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-native-distribution.html
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "Calculator"
             packageVersion = "1.0.1"
 
-            val iconFilePath = project.file("src/commonMain/composeResources/drawable/calculator.png")
             macOS {
-                iconFile.set(iconFilePath)
+                bundleID = "jetbrains.compose.calculator"
             }
             windows {
-                iconFile.set(iconFilePath)
+                dirChooser = true
+                perUserInstall = true
+                menuGroup = "Calculator"
+                upgradeUuid = "55d404e2-a944-4a3c-b42d-6f391656d517" // Project specific value
+                iconFile.set(project.file("src/desktopMain/resources/calculator.ico"))
             }
             linux {
-                iconFile.set(iconFilePath)
+                menuGroup = "Calculator"
+                iconFile.set(project.file("src/commonMain/composeResources/drawable/calculator.png"))
             }
 
         }
