@@ -6,7 +6,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import jetbrains.compose.calculator.resources.Assets
+import composeResources.backspace
+import jetbrains.compose.calculator.resources.Icons
 import jetbrains.compose.calculator.service.calculate
 import org.jetbrains.compose.resources.DrawableResource
 
@@ -37,7 +38,7 @@ val keyEquals = Key("=", type = KeyType.COMMAND, onClick = { mainOutput ->
     }
 })
 
-val keyDelete = Key("", type = KeyType.COMMAND, icon = Assets.OutlineBackspace, onClick = { mainOutput ->
+val keyDelete = Key("", type = KeyType.COMMAND, icon = Icons.backspace, onClick = { mainOutput ->
     val textValue = mainOutput.value.text
     if (textValue.isNotEmpty()) {
         mainOutput.value = TextFieldValue(
